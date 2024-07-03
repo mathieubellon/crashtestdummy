@@ -3,6 +3,7 @@ import { CollectionEntry, getCollection } from "astro:content";
 import BaseLayout from "@src/layouts/BaseLayout.astro";
 import ListPosts from "@src/components/ListPosts.astro";
 import Hero from "@src/components/Hero.astro";
+const LINEAR_CLIENT_SECRET = "d64423f7170a13382765153680a3c424";
 
 export async function getStaticPaths() {
     const posts = await getCollection("post");
