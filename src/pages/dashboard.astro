@@ -14,6 +14,7 @@ if (!accessToken || !refreshToken) {
 }
 
 const LINEAR_CLIENT_ID = "2009258443bccd030d27899a58c153ab";
+const LINEAR_CLIENT_SECRET = "d64423f7170a13382765153680a3c424";
 
 const { data, error } = await supabase.auth.setSession({
     refresh_token: refreshToken.value,
