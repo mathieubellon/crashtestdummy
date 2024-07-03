@@ -4,6 +4,7 @@ import BaseLayout from "@src/layouts/BaseLayout.astro";
 import ListPosts from "@src/components/ListPosts.astro";
 import Hero from "@src/components/Hero.astro";
 const LINEAR_CLIENT_SECRET = "d64423f7170a13382765153680a3c424";
+const token = "lin_api_fdYscgaOYjWWB3FmjPItEpb6REPTzrKZ5SIB3VNl";
 
 export async function getStaticPaths() {
     const posts = await getCollection("post");
