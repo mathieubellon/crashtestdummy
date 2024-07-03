@@ -1,0 +1,20 @@
+---
+export interface Props {
+    date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<div class="text-slate-500 text-base">
+    Published on
+    <time datetime={date.toISOString()}>
+        {
+            date.toLocaleDateString("en-us", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            })
+        }
+    </time>
+</div>

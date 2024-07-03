@@ -1,0 +1,10 @@
+---
+const { name } = Astro.props;
+---
+
+<a
+    href={`/category/${name}`}
+    class="h-fit w-fit text-brand-700 bg-brand-50 ring-brand-600/20 rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-base font-medium ring-1 ring-inset capitalize"
+>
+    #{name}
+</a>

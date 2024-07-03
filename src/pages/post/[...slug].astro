@@ -1,0 +1,78 @@
+---
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import { CollectionEntry, getCollection } from "astro:content";
+import Voting from "@src/components/Voting.vue";
+
+import FormattedDate from "@src/components/FormattedDate.astro";
+import Tag from "@src/components/Tag.astro";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("post");
+    return posts.map((post) => ({
+        params: { slug: post.slug },
+        props: post,
+    }));
+}
+type Props = CollectionEntry<"post">;
+
+const post = Astro.props;
+const { Content } = await post.render();
+---
+<BaseLayout>
+    <a
+        class="transition ease-in-out delay-150 mt-10 max-w-4xl mx-auto py-5 my-2 border border-transparent hover:bg-slate-50 hover:border-slate-200 hover:text-slate-600 rounded w-full"
+        href="/">← Back</a
+    >
+
+    <div
+        class="w-full max-w-4xl mx-auto mb-16 bg-white p-10 border border-slate-200 rounded"
+    >
+        <h1 class="text-6xl font-extrabold">{post.data.title}</h1>
+        <h2 class="text-xl my-5">{post.data.description}</h2>
+        <div class="flex space-x-4 my-2">
+            <Tag
+                name={post.data.category}
+                <FormattedDate
+                date={post.data.pubDate}
+            />
+
+            <FormattedDate date={post.data.pubDate} />
+
+            {
+                post.data.updatedDate && (
+                    <div class="last-updated-on">
+                        Last updated on{" "}
+                        <FormattedDate date={post.data.updatedDate} />
+                    </div>
+                )
+            }
+        </div>
+
+        {
+            // Embed new Imgae component only if  ...cover and ...coverAlt exist
+            post.data.cover && post.data.coverAlt && (
+                <Image src={post.data.cover} alt={post.data.coverAlt} />
+            )
+        }
+
+        {
+            // If LoomVideoUrl display the embed tag 2
+            post.data.loomVideoUrl && (
+                <div style="position: relative; padding-bottom: 56.25%; height: 0;">
+                    <iframe
+                        src={post.data.loomVideoUrl}
+                        frameborder="0"
+                        allowfullscreen
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    />
+                </div>
+            )
+        }
+
+        <article class="prose prose-lg">
+            <Content />
+        </article>
+        <Voting title={post.data.title} url={post.data.category} client:load></Voting>
+    </div>
+</BaseLayout>

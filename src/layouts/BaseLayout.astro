@@ -1,0 +1,18 @@
+---
+import HTMLHead from "@src/components/HTMLHead.astro";
+import TopNavigation from "@src/components/TopNavigation.vue";
+import Footer from "@src/components/Footer.vue";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@src/consts";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <HTMLHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body class="bg-slate-200 page-wrap">
+        <TopNavigation title={SITE_TITLE} />
+        <div><slot /></div>
+        <Footer />
+    </body>
+</html>

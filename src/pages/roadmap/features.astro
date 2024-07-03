@@ -1,0 +1,102 @@
+---
+export const prerender = false;
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Debug } from "astro:components";
+import Board from "@src/components/kanban/Board.vue";
+import { Client, APIErrorCode, LogLevel } from "@notionhq/client";
+
+const databaseId = "1176ea185bc945c0b2566cd2d274d634";
+
+const notion = new Client({ auth: import.meta.env.PUBLIC_NOTION_TOKEN });
+logLevel: LogLevel.DEBUG;
+const myPage = await notion.databases.query({
+    database_id: databaseId,
+
+    filter: {
+        property: "Show in public roadmap",
+        select: {
+            equals: "Done",
+        },
+    },
+});
+
+const items = myPage.results;
+
+console.log(items);
+---
+
+<BaseLayout>
+    <h1 class="text-4xl font-bold flex justify-center p-10">
+        Features roadmap
+    </h1>
+
+    <div class="py-10 flex justify-center">
+        <div class="sm:hidden">
+            <label for="tabs" class="sr-only">Select a tab</label>
+            <!-- Use an "onChange" listener to redirect the user to the selected tab URL. -->
+            <select
+                id="tabs"
+                name="tabs"
+                class="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+            >
+                <option>Under consideration</option>
+                <option selected>In Progress</option>
+                <option>Done</option>
+            </select>
+        </div>
+        <div class="hidden sm:block">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                    <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700" -->
+                    <a
+                        href="#"
+                        class="border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                    >
+                        Under consideration
+                        <!-- Current: "bg-indigo-100 text-indigo-600", Default: "bg-gray-100 text-gray-900" -->
+                        <span
+                            class="bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
+                            >52</span
+                        >
+                    </a>
+                    <a
+                        href="#"
+                        class="border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                    >
+                        In Progress
+                        <span
+                            class="bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
+                            >6</span
+                        >
+                    </a>
+                    <a
+                        href="#"
+                        class="border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium"
+                        aria-current="page"
+                    >
+                        Done
+                        <span
+                            class="bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block"
+                            >4</span
+                        >
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="flex grid grid-cols-4 gap-4">
+        {
+            items.map((item) => (
+                <div class="bg-white p-10 m-2 rounded-lg flex flex-col border border-slate-300 h-80">
+                    <div class="text-2xl">{item.icon?.emoji}</div>
+                    <div class="text-lg font-semibold">
+                        {item.properties.Name.title[0].plain_text}
+                    </div>
+                    <div class="italic">
+                        {item.properties.ElevatorPitch.rich_text[0]?.plain_text}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</BaseLayout>

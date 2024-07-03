@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Card from "./Card.astro";
+
+type post = CollectionEntry<"post">;
+
+const { posts } = Astro.props;
+
+const orderedPosts = posts.sort(
+    (a: post, b: post) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<main
+    class="p-10 max-w-4xl mx-auto container flex flex-1 flex-col items-center w-full"
+>
+    {orderedPosts.map((post: post) => <Card {...post} />)}
+</main>

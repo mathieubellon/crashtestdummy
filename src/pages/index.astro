@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import ListPosts from "../components/ListPosts.astro";
+
+const posts = await getCollection("post");
+---
+
+<BaseLayout>
+    <Hero />
+    <ListPosts posts={posts} />
+</BaseLayout>

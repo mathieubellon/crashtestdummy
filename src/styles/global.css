@@ -1,0 +1,28 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+
+
+footer{
+    @apply flex items-center justify-center bg-slate-900 text-white py-4;
+    flex-shrink: 0;
+}
+
+.page-wrap {
+    background: white;
+    height: calc(100vh);
+    box-shadow: 0 0 3px rgba(black, 0.33);
+
+    display: grid;
+    grid-template-columns: minmax(10px, 1fr);
+    grid-template-rows: 65px 1fr min-content;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 100%;
+        grid-template-rows: auto;
+    }
+}
+

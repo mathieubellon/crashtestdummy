@@ -1,0 +1,26 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import ListPosts from "@src/components/ListPosts.astro";
+import Hero from "@src/components/Hero.astro";
+
+export async function getStaticPaths() {
+    const posts = await getCollection("post");
+    return [
+        { params: { category: "CTI" } },
+        { params: { category: "integrations" } },
+        { params: { category: "features" } },
+    ];
+}
+
+const { category } = Astro.params;
+const { posts } = Astro.props;
+const filteredPosts = await getCollection("post", ({ data }) => {
+    return data.category == category;
+});
+---
+
+<BaseLayout>
+    <Hero categoryName={category} />
+    <ListPosts posts={filteredPosts} />
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { graphql } from "@octokit/graphql";
+import { Debug } from "astro:components";
+import Board from "@src/components/kanban/Board.vue";
+
+const resp = await graphql(
+    `
+        query ($owner: String!, $repo: String!, $projectNumber: Int!) {
+            repository(owner: $owner, name: $repo) {
+                projectV2(number: $projectNumber) {
+                    title
+                    field(name: "Status") {
+                        __typename
+                        ... on ProjectV2SingleSelectField {
+                            id
+                            options {
+                                name
+                            }
+                        }
+                    }
+                    items(first: 100) {
+                        totalCount
+                        nodes {
+                            fieldValueByName(name: "Status") {
+                                ... on ProjectV2ItemFieldSingleSelectValue {
+                                    name
+                                }
+                            }
+                            content {
+                                ... on Issue {
+                                    title
+                                }
+                                ... on DraftIssue {
+                                    title
+                                }
+                            }
+                        }
+                        pageInfo {
+                            hasNextPage
+                            startCursor
+                            endCursor
+                            hasPreviousPage
+                        }
+                    }
+                }
+            }
+        }
+    `,
+    {
+        owner: "mathieubellon",
+        repo: "LivestormBar",
+        projectNumber: 3,
+        headers: {
+            authorization: `token xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`,
+        },
+    },
+);
+
+const items = resp.repositoryfinder.projectV2.items.nodes;
+const columns = resp.repository.projectV2.field.options;
+---
+
+<BaseLayout>
+    <h1 class="text-2xl flex justify-center p-10 border border-b-2">
+        Integrations roadmap
+    </h1>
+
+    <div class="relative isolate overflow-hidden bg-white">
+        {
+            items.map((item: any) => (
+                <li>
+                    {item.content.title} - {item.fieldValueByName.name}
+                </li>
+            ))
+        }
+        <Debug {items} />
+    </div>
+    <Board />
+</BaseLayout>

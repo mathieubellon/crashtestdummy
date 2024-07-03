@@ -1,0 +1,73 @@
+---
+export interface Props {
+    categoryName?: string;
+}
+const { categoryName } = Astro.props;
+---
+
+<div id="hero" class="bg-slate-950 w-full">
+    <div class="mx-auto max-w-4xl p-10">
+        <div class="prose text-5xl md:text-6xl my-10 text-white font-bold">
+            My
+            {
+                categoryName ? (
+                    <span class="capitalize mx-2 text-brand-500">
+                        #{categoryName}
+                    </span>
+                ) : (
+                    ""
+                )
+            }
+             changelog
+        </div>
+        <div class="prose prose-xl py-5 justify-center text-slate-200">
+            Subscribe to our <a href="/rss.xml">RSS feed</a>, follow us on <a
+                href="YOUR TWITTER HANDLE">Twitter</a
+            > or click the bell icon to get notified for our latest product
+            updates.
+        </div>
+        <div class="img"></div>
+        <a
+            href="/"
+            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >All</a
+        >
+        <a
+            href="/category/features"
+            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Features</a
+        >
+        <a
+            href="/category/CTI"
+            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Threat Intelligence</a
+        >
+        <a
+            href="/category/integrations"
+            class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+            >Integrations</a
+        >
+    </div>
+</div>
+
+<!-- <script>
+    // TODO npm install micromodal --save // via npm
+    // Find our component DOM on the page.
+    const buttons = document.querySelectorAll(
+        "[data-trigger-subscription-modal]"
+    );
+
+    buttons[0].addEventListener("click", () => console.log("clicked"));
+</script> -->
+
+<style>
+    .prose > a {
+        @apply text-brand-300;
+    }
+    div#hero {
+        background-image: url("/assets/brand_bg.svg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+</style>

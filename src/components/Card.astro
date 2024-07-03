@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+import Tag from "./Tag.astro";
+
+type Props = CollectionEntry<"post">;
+
+const { slug, data } = Astro.props;
+---
+
+<div class="mb-8 w-full bg-white border border-slate-300 p-6 rounded">
+    <div class="flex flex-col justify-between lg:flex-row">
+        <div>
+            <a href={`/post/${slug}/`} class="text-3xl font-semibold"
+                >{data.title}</a
+            >
+            <FormattedDate date={data.pubDate} />
+        </div>
+        <Tag name={data.category} />
+    </div>
+
+    <p class="text-lg mt-5 text-slate-700 line-clamp-3">{data.description}</p>
+    <!-- <img src={data.heroImage} alt={data.title} /> -->
+</div>

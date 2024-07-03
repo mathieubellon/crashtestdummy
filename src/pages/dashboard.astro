@@ -1,0 +1,47 @@
+---
+import { listBlockChildren } from "@notionhq/client/build/src/api-endpoints";
+import Layout from "@src/layouts/BaseLayout.astro";
+
+import { supabase } from "@src/lib/supabase";
+
+const { cookies, redirect } = Astro;
+
+const accessToken = cookies.get("sb-access-token");
+const refreshToken = cookies.get("sb-refresh-token");
+
+if (!accessToken || !refreshToken) {
+    return redirect("/signin");
+}
+
+const LINEAR_CLIENT_ID = "2009258443bccd030d27899a58c153ab";
+
+const { data, error } = await supabase.auth.setSession({
+    refresh_token: refreshToken.value,
+    access_token: accessToken.value,
+});
+
+const token = "lin_api_fdYscgaOYjWWB3FmjPItEpb6REPTzrKZ5SIB3VNl";
+
+const SUPABASE_DB_PASSWORD = "gt6rIrRfOO18e5Lk";
+
+if (error) {
+    cookies.delete("sb-access-token", {
+        path: "/",
+    });
+    cookies.delete("sb-refresh-token", {
+        path: "/",
+    });
+
+    return redirect("/signin");
+}
+
+const email = data?.user?.email;
+---
+
+<Layout title="dashboard">
+    <h1>Welcome {email}</h1>
+    <p>We are happy to see you here</p>
+    <form action="/api/auth/signout">
+        <button type="submit">Sign out</button>
+    </form>
+</Layout>
