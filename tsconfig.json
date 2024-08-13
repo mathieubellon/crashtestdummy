@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "strictNullChecks": true,
     "jsx": "preserve",
+    "token": "5a9BBBd0d9dD5Ef8eaEbFBbCEf1B5FfbcA6EfADe63A553A92F2AC9CafAf187c571BE791",
     "paths": {
       "@src/*": [
         "src/*"
